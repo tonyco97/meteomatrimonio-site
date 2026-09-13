@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meteo Matrimonio · Pesaro 12 settembre</title>
+  <meta name="description" content="Analisi meteo per l'11-14 settembre 2026 a Pesaro: 26 fonti, 100+ scenari ensemble, aggiornata ogni 2 ore.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💍</text></svg>">
+</head>
+<body>
+  <header class="hero">
+    <p class="hero-kicker">Pesaro · sabato 12 settembre 2026 · ore 15:00</p>
+    <h1>Che tempo farà al matrimonio?</h1>
+    <div class="countdown" id="countdown" aria-live="polite"></div>
+    <p class="updated" id="updated"></p>
+  </header>
+
+  <main>
+    <!-- 1. VERDETTO -->
+    <section class="verdict-card" id="verdictCard"></section>
+
+    <!-- 2. I DUE GIORNI CHE CONTANO -->
+    <section id="days" class="days"></section>
+
+    <!-- 3. CONFRONTO 11-14 -->
+    <section class="panel">
+      <h2>La perturbazione si sposta?</h2>
+      <p class="explain">Confronto dei 4 giorni attorno al matrimonio: serve a capire se un
+      eventuale peggioramento anticipa sull'11, resta sul 12, o slitta al 13-14.
+      Il «rischio pioggia» viene dagli scenari ensemble, non dall'icona delle app.</p>
+      <div class="table-wrap"><table id="compareTable"></table></div>
+    </section>
+
+    <!-- 4. ENSEMBLE -->
+    <section class="panel">
+      <h2>La probabilità vera: gli scenari ensemble</h2>
+      <p class="explain">Ogni centro meteo fa girare lo stesso modello decine di volte con
+      condizioni leggermente diverse («membri»). Se piove in 10 scenari su 100, la
+      probabilità reale è ~10% — anche se l'icona dell'app mostra pioggia.
+      Qui sotto: quanti scenari vedono pioggia (&gt;1&nbsp;mm nelle 24h) per ciascun giorno.</p>
+      <div id="ensembleBars"></div>
+      <p class="muted" id="ensembleNote"></p>
+    </section>
+
+    <!-- 5. FASCIA 14-24 DEL 12 -->
+    <section class="panel" id="slotPanel"></section>
+
+    <!-- 5b. DIVERGENZE -->
+    <section class="panel" id="divergePanel"></section>
+
+    <!-- 6. SINOTTICA -->
+    <section class="panel">
+      <h2>Cosa dicono le carte in quota</h2>
+      <p class="explain">La pioggia «vera» (perturbazioni organizzate) si vede prima in quota:
+      se il geopotenziale a 500&nbsp;hPa resta alto c'è l'anticiclone; se crolla, arriva una
+      saccatura. Analisi generata automaticamente dai dati ECMWF e GFS su Pesaro.</p>
+      <ul id="synopticText" class="synoptic-list"></ul>
+      <div class="table-wrap"><table id="synopticTable"></table></div>
+    </section>
+
+    <!-- 7. TREND RUN-TO-RUN -->
+    <section class="panel">
+      <h2>Il segnale si rafforza o si indebolisce?</h2>
+      <p class="explain">A ogni aggiornamento salviamo la probabilità di pioggia per la fascia
+      14–24 del 12. Se la linea scende run dopo run, il rischio sta evaporando; se sale ed è
+      stabile, va preso sul serio. I salti continui = modelli ancora confusi.</p>
+      <p id="trendVerdict" class="trend-verdict"></p>
+      <div id="trendChart" class="chart"></div>
+    </section>
+
+    <!-- 8. OTTIMISTA / PESSIMISTA -->
+    <section class="panel two-col" id="watchPanel">
+      <div class="watch good-side">
+        <h3>😊 Diventerò più ottimista se…</h3>
+        <ul id="optimistList"></ul>
+      </div>
+      <div class="watch bad-side">
+        <h3>😟 Diventerò più pessimista se…</h3>
+        <ul id="pessimistList"></ul>
+      </div>
+    </section>
+
+    <!-- 9. ORA PER ORA -->
+    <section class="panel">
+      <h2>Ora per ora</h2>
+      <div class="day-toggle" id="hourlyToggle" role="tablist"></div>
+      <p><label class="muted">Fonte:
+        <select id="hourlySource"></select>
+      </label></p>
+      <div class="table-wrap"><table id="hourlyTable"></table></div>
+    </section>
+
+    <!-- 10. GRAFICO ORARIO -->
+    <section class="panel">
+      <h2>Andamento orario</h2>
+      <div class="day-toggle" id="chartToggle" role="tablist"></div>
+      <div id="hourlyChart" class="chart"></div>
+      <p class="muted">Barre azzurre: probabilità di pioggia (mediana delle fonti).
+      Linea oro: temperatura.</p>
+    </section>
+
+    <!-- 11. CONFRONTO FONTI -->
+    <section class="panel">
+      <h2>Confronto fonti, una per una</h2>
+      <p class="explain">26 fonti indipendenti. Quelle con orizzonte corto (ICON-2I italiano,
+      MeteoAM, dettaglio orario 3BMeteo…) compaiono da sole man mano che il giorno si avvicina.</p>
+      <div class="day-toggle" id="sourceToggle" role="tablist"></div>
+      <div class="table-wrap"><table id="sourcesTable"></table></div>
+    </section>
+
+    <!-- 12. LINK ESTERNI -->
+    <section class="panel">
+      <h2>Verifica tu stesso</h2>
+      <p class="explain">Le stesse carte che guardano i meteorologi, già puntate su Pesaro / 12 settembre:</p>
+      <div class="links" id="extLinks"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Aggiornato automaticamente ogni 2 ore · 26 fonti — siti: iLMeteo.it, 3BMeteo, TempoItalia,
+    MeteoLive, Meteo5, MeteoAM (Aeronautica Militare), AccuWeather, Foreca, wttr.in, MET Norway (yr.no);
+    modelli via Open-Meteo: ECMWF, ECMWF-AIFS, GraphCast, GFS/NOAA, ICON/DWD, ICON-2I ItaliaMeteo-ARPAE,
+    Météo-France, UKMO, JMA, GEM, KNMI, DMI, MeteoSwiss, CMA, BOM, KMA · ensemble: ECMWF ENS (51),
+    GEFS (31), ICON-EPS (40), GEM ENS (21)</p>
+    <p>💍 12 settembre 2026 · Pesaro</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
